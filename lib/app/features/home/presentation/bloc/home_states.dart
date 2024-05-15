@@ -19,10 +19,10 @@ final class HomeLoadFailure extends HomeStates {
 }
 
 final class HomeLoadSuccess extends HomeStates {
-  final List<ProductDataEntity> filteredProductDataList;
+  final List<ProductDataEntity> productsList;
 
   HomeLoadSuccess({
-    required this.filteredProductDataList,
+    required this.productsList,
   });
 }
 

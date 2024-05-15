@@ -1,10 +1,7 @@
-
-import 'package:ecommerce_app/app/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get_it/get_it.dart';
 import 'package:responsive_framework/breakpoint.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 
@@ -15,15 +12,13 @@ import 'dart:developer' as developer;
 
 import 'app/core/services/connection/bloc/connection_cubit.dart';
 import 'app/core/themes/themes.dart';
+import 'app/features/home/presentation/ui/pages/home_page.dart';
+import 'app/features/inital_page/presentation/ui/pages/inital_page.dart';
+
 final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
 
 Future<void> main() async {
-  // await dotenv.load();
-  // var x = dotenv.env['TESTE'];
-  // developer.log(x.toString());
-
-  developer.log('teste 1');
-
+  await dotenv.load();
   await Inject.init();
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,32 +54,26 @@ class _ECommerceAppState extends State<ECommerceApp> {
       listeners: [
         BlocListener<ConnectionCubit, bool>(
           listener: (context, connected) {
-            // showConnectionSnackBar(
-            //   context: _navigatorKey.currentContext!,
-            //   connected: connected,
-            // );
             developer.log(connected.toString());
           },
         ),
       ],
       child: MaterialApp(
-          title: 'ECommerceApp',
-          navigatorKey: _navigatorKey,
-          builder: (context, child) => Scaffold(
-            body: ResponsiveBreakpoints.builder(
-              child: child!,
-              breakpoints: [
-                const Breakpoint(start: 0, end: 600, name: MOBILE),
-                const Breakpoint(start: 601, end: 1000, name: TABLET),
-              ],
-            ),
-          ),
-          onGenerateRoute: RoutesManager.generateRoute,
-          home: const HomePage(),
-          debugShowCheckedModeBanner: false,
+        title: 'ECommerceApp',
+        navigatorKey: _navigatorKey,
+        builder: (context, child) => ResponsiveBreakpoints.builder(
+          child: child!,
+          breakpoints: [
+            const Breakpoint(start: 0, end: 600, name: MOBILE),
+            const Breakpoint(start: 601, end: 1000, name: TABLET),
+          ],
+        ),
+        onGenerateRoute: RoutesManager.generateRoute,
+        debugShowCheckedModeBanner: false,
         darkTheme: darkTheme,
         theme: lightTheme,
         themeMode: ThemeMode.light,
+        home: const InitialPage(),
       ),
     );
   }
