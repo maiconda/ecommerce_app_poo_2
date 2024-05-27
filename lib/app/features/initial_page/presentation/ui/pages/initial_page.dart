@@ -1,14 +1,15 @@
-import 'package:ecommerce_app/app/core/entities/product_data_entity.dart';
+import 'package:ecommerce_app/app/features/%20settings/presentation/ui/pages/settings_page.dart';
+import 'package:ecommerce_app/app/features/cart/presentation/ui/pages/cart_page.dart';
 import 'package:ecommerce_app/app/features/home/presentation/ui/pages/home_page.dart';
-import 'package:ecommerce_app/app/features/inital_page/presentation/bloc/initial_page_bloc.dart';
-import 'package:ecommerce_app/app/features/inital_page/presentation/bloc/initial_page_events.dart';
-import 'package:ecommerce_app/app/features/inital_page/presentation/bloc/initial_page_states.dart';
-import 'package:ecommerce_app/app/features/product/presentation/ui/pages/product_page.dart';
+import 'package:ecommerce_app/app/features/search/presentation/ui/pages/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 
-import '../widgets/appbar_item_widget.dart';
+import '../../bloc/initial_page_bloc.dart';
+import '../../bloc/initial_page_events.dart';
+import '../../bloc/initial_page_states.dart';
 
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
@@ -41,16 +42,20 @@ class _InitialPageState extends State<InitialPage> {
               bottomNavigationBar: NavigationBar(
 
                 destinations: const [
-                  NavigationDestination(icon: Icon(Icons.add), label: 'label'),
-                  NavigationDestination(icon: Icon(Icons.add), label: 'label'),
-                  NavigationDestination(icon: Icon(Icons.add), label: 'label'),
-                  NavigationDestination(icon: Icon(Icons.add), label: 'label'),
+                  NavigationDestination(icon: Icon(Icons.home), label: 'Início'),
+                  NavigationDestination(icon: Icon(Icons.search), label: 'Pesquisar'),
+                  NavigationDestination(icon: Icon(Icons.shopping_cart), label: 'Carrinho'),
+                  NavigationDestination(icon: Icon(FontAwesomeIcons.gear), label: 'Opções'),
                 ],
                 selectedIndex: state.index,
                 onDestinationSelected: (value) {
-                  _pageController.jumpToPage(value);
                   _initialPageBloc.add(
                     NavigatorIndexTriggered(index: value),
+                  );
+                  _pageController.animateToPage(
+                    value,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.ease,
                   );
                 },
               ),
@@ -58,14 +63,19 @@ class _InitialPageState extends State<InitialPage> {
                 controller: _pageController,
                 children: const [
                   HomePage(),
-                  HomePage(),
-                  HomePage(),
-                  HomePage(),
+                  SearchPage(),
+                  CartPage(),
+                  SettingsPage(),
                 ],
+                onPageChanged: (value) {
+                  _initialPageBloc.add(
+                    NavigatorIndexTriggered(index: value),
+                  );
+                },
               ),
             );
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
     );

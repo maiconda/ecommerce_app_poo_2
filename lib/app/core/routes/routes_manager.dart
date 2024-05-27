@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../features/home/presentation/ui/pages/home_page.dart';
 import '../../features/product/presentation/ui/pages/product_page.dart';
 import '../entities/product_data_entity.dart';
-import '../utils/responsivness.dart';
+import '../utils/responsiveness.dart';
 import '../widgets/empty_widget.dart';
 
 class RoutesManager {

@@ -12,8 +12,7 @@ import 'dart:developer' as developer;
 
 import 'app/core/services/connection/bloc/connection_cubit.dart';
 import 'app/core/themes/themes.dart';
-import 'app/features/home/presentation/ui/pages/home_page.dart';
-import 'app/features/inital_page/presentation/ui/pages/inital_page.dart';
+import 'app/features/initial_page/presentation/ui/pages/initial_page.dart';
 
 final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
 
@@ -25,10 +24,10 @@ Future<void> main() async {
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: Colors.red,
-      systemNavigationBarDividerColor: Colors.grey,
+      statusBarColor: Colors.black,
+      systemNavigationBarDividerColor: Colors.black,
       systemNavigationBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.blue,
+      systemNavigationBarColor: Colors.black,
     ),
   );
 
