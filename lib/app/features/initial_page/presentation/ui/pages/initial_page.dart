@@ -11,6 +11,8 @@ import '../../bloc/initial_page_bloc.dart';
 import '../../bloc/initial_page_events.dart';
 import '../../bloc/initial_page_states.dart';
 
+import 'dart:developer' as developer;
+
 class InitialPage extends StatefulWidget {
   const InitialPage({super.key});
 
@@ -19,8 +21,14 @@ class InitialPage extends StatefulWidget {
 }
 
 class _InitialPageState extends State<InitialPage> {
-  final PageController _pageController = PageController();
+  late final PageController _pageController;
   final _initialPageBloc = GetIt.I<InitialPageBloc>();
+
+  @override
+  void initState() {
+    _pageController = PageController(initialPage: 0);
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -31,16 +39,23 @@ class _InitialPageState extends State<InitialPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<InitialPageBloc>(
-      create: (BuildContext context) => _initialPageBloc..add(
-        NavigatorIndexTriggered(index: 0),
-      ),
-      child: BlocBuilder<InitialPageBloc, InitialPageStates>(
+      create: (BuildContext context) => _initialPageBloc,
+      child: BlocConsumer<InitialPageBloc, InitialPageStates>(
+        listenWhen: (previous, current) => current is InitialPageNavigator,
+        listener: (context, state) {
+          if(state is InitialPageNavigator){
+            _pageController.animateToPage(
+              state.index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.ease,
+            );
+          }
+        },
         buildWhen: (previous, current) => current is InitialPageNavigator,
         builder: (context, state) {
           if(state is InitialPageNavigator){
             return Scaffold(
               bottomNavigationBar: NavigationBar(
-
                 destinations: const [
                   NavigationDestination(icon: Icon(Icons.home), label: 'Início'),
                   NavigationDestination(icon: Icon(Icons.search), label: 'Pesquisar'),
@@ -49,29 +64,20 @@ class _InitialPageState extends State<InitialPage> {
                 ],
                 selectedIndex: state.index,
                 onDestinationSelected: (value) {
-                  _initialPageBloc.add(
-                    NavigatorIndexTriggered(index: value),
-                  );
-                  _pageController.animateToPage(
-                    value,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.ease,
-                  );
+                    _initialPageBloc.add(
+                      NavigatorIndexTriggered(index: value),
+                    );
                 },
               ),
               body: PageView(
                 controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
                 children: const [
                   HomePage(),
                   SearchPage(),
                   CartPage(),
                   SettingsPage(),
                 ],
-                onPageChanged: (value) {
-                  _initialPageBloc.add(
-                    NavigatorIndexTriggered(index: value),
-                  );
-                },
               ),
             );
           }

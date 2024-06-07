@@ -1,28 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 part 'color_schemes.dart';
 
 ThemeData get darkTheme => ThemeData(
+  textTheme: GoogleFonts.montserratTextTheme(),
   useMaterial3: true,
   colorScheme: _darkColorScheme,
   appBarTheme: AppBarTheme(color: _darkColorScheme.primary),
-  textTheme: const TextTheme(
-    bodyMedium: TextStyle(
-      fontSize: 12,
-      color: Colors.white,
-    ),
-    titleMedium: TextStyle(
-      fontSize: 14,
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-    ),
-    titleSmall: TextStyle(
-      fontSize: 12,
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
 );
 
 ThemeData get lightTheme => ThemeData(
@@ -58,11 +43,11 @@ ThemeData get lightTheme => ThemeData(
     activeTrackColor: _lightColorScheme.secondary,
   ),
   scrollbarTheme: ScrollbarThemeData(
-    thumbColor: MaterialStateProperty.all(Colors.grey),
+    thumbColor: WidgetStateProperty.all(Colors.grey),
     radius: const Radius.circular(8),
-    trackVisibility: MaterialStateProperty.all(true),
+    trackVisibility: WidgetStateProperty.all(true),
     interactive: true,
-    thickness: MaterialStateProperty.all(10),
+    thickness: WidgetStateProperty.all(10),
   ),
   drawerTheme: DrawerThemeData(
     backgroundColor: _lightColorScheme.primary,
@@ -85,7 +70,7 @@ ThemeData get lightTheme => ThemeData(
     unselectedLabelColor: Colors.white30,
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: _lightColorScheme.background,
+    backgroundColor: _lightColorScheme.surface,
   ),
   cardTheme: CardTheme(
     color: _lightColorScheme.onPrimary,
@@ -107,33 +92,33 @@ ThemeData get lightTheme => ThemeData(
         fontWeight: FontWeight.bold,
       ),
       backgroundColor: _lightColorScheme.primary,
-      foregroundColor: _lightColorScheme.background,
+      foregroundColor: _lightColorScheme.surface,
       disabledBackgroundColor: _lightColorScheme.outline.withOpacity(0.5),
-      disabledForegroundColor: _lightColorScheme.background,
+      disabledForegroundColor: _lightColorScheme.surface,
     ),
   ),
   switchTheme: SwitchThemeData(
-    thumbColor: MaterialStateProperty.resolveWith<Color>((Set states) {
-      if(states.contains(MaterialState.disabled)){
+    thumbColor: WidgetStateProperty.resolveWith<Color>((Set states) {
+      if(states.contains(WidgetState.disabled)){
         return Colors.black26;
       }
-      if (states.contains(MaterialState.selected)) {
+      if (states.contains(WidgetState.selected)) {
         return _lightColorScheme.primary;
       }
       return _lightColorScheme.primary.withOpacity(0.5);
     }),
-    trackColor: MaterialStateProperty.resolveWith<Color>((Set states) {
-      if(states.contains(MaterialState.disabled)){
+    trackColor: WidgetStateProperty.resolveWith<Color>((Set states) {
+      if(states.contains(WidgetState.disabled)){
         return Colors.grey;
       }
-      if (states.contains(MaterialState.selected)) {
+      if (states.contains(WidgetState.selected)) {
         return _lightColorScheme.secondary;
       }
       return _lightColorScheme.secondary.withOpacity(0.5);
     }),
-    thumbIcon: MaterialStateProperty.resolveWith<Icon>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
+    thumbIcon: WidgetStateProperty.resolveWith<Icon>(
+          (Set<WidgetState> states) {
+        if (states.contains(WidgetState.selected)) {
           return Icon(
             Icons.check,
             color: _lightColorScheme.surface,
@@ -146,29 +131,5 @@ ThemeData get lightTheme => ThemeData(
       },
     ),
   ),
-  textTheme: const TextTheme(
-    bodyMedium: TextStyle(
-      fontSize: 13,
-      color: Colors.black,
-    ),
-    bodyLarge: TextStyle(
-      fontSize: 16,
-      color: Colors.black,
-    ),
-    titleMedium: TextStyle(
-      fontSize: 14,
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-    ),
-    titleLarge: TextStyle(
-      fontSize: 18,
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-    ),
-    titleSmall: TextStyle(
-      fontSize: 12,
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
+  textTheme: GoogleFonts.montserratTextTheme(),
 );
