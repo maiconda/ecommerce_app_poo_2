@@ -14,7 +14,7 @@ class ProductCartWidget extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             color: !isLast ? Colors.black.withOpacity(0.5) : Colors.transparent,
-            width: !isLast ? .75 : 0,
+            width: !isLast ? .8 : 0,
           ),
         ),
       ),
@@ -27,10 +27,10 @@ class ProductCartWidget extends StatelessWidget {
             width: 125,
             decoration: BoxDecoration(
               color: Colors.black,
-              borderRadius: BorderRadius.circular(10), // Set your desired radius
+              borderRadius: BorderRadius.circular(10),
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(10), // Ensure the radius matches the container's
+              borderRadius: BorderRadius.circular(10),
               child: Image.network(
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-q2Sn6Blje7-b7A44Y7XZ1CWCaltO-fOSKdnmIoWcROzz-BVOme68nRfgFJ5PZ4RIps&usqp=CAU',
                 fit: BoxFit.cover,

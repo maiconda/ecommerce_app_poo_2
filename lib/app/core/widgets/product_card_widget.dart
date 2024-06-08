@@ -7,9 +7,9 @@ class ProductCardWidget extends StatelessWidget {
   final ProductDataEntity productData;
 
   const ProductCardWidget({
-    Key? key,
+    super.key,
     required this.productData,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

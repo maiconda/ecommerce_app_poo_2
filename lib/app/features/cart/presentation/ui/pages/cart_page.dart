@@ -38,9 +38,9 @@ class _CartPageState extends State<CartPage> with AutomaticKeepAliveClientMixin{
                 ),
               ),
               Container(
-                height: 2,
+                height: 1,
                 width: double.infinity,
-                color: Colors.black,
+                color: Colors.black.withOpacity(0.7),
                 margin: const EdgeInsets.only(bottom: 17),
               ),
               Expanded(

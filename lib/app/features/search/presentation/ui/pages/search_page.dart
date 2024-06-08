@@ -109,7 +109,13 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
               Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 15),
+                height: 1,
+                width: double.infinity,
+                color: Colors.black.withOpacity(0.7),
+                margin: const EdgeInsets.only(bottom: 15, top: 20),
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 15),
                 child: Text(
                   'Principais Categorias',
                   style: GoogleFonts.montserrat()
