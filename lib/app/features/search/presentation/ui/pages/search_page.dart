@@ -45,10 +45,9 @@ class _SearchPageState extends State<SearchPage> {
             children: [
               Container(
                 margin: const EdgeInsets.only(bottom: 15),
-                child: Text(
+                child: const Text(
                   'O que você está procurando?',
-                  style: GoogleFonts.montserrat()
-                      .copyWith(fontSize: 23, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
                 ),
               ),
               Row(
@@ -119,9 +118,9 @@ class _SearchPageState extends State<SearchPage> {
               ),
               Expanded(
                 child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 2, // Relação de aspecto (largura / altura)
+                    childAspectRatio: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                   ),
