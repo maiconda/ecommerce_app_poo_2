@@ -1,6 +1,9 @@
+import 'package:ecommerce_app/app/core/entities/category_entity.dart';
+import 'package:ecommerce_app/app/core/entities/product_data_entity.dart';
 import 'package:ecommerce_app/app/features/%20settings/presentation/ui/pages/settings_page.dart';
 import 'package:ecommerce_app/app/features/cart/presentation/ui/pages/cart_page.dart';
 import 'package:ecommerce_app/app/features/home/presentation/ui/pages/home_page.dart';
+import 'package:ecommerce_app/app/features/product/presentation/ui/pages/product_page.dart';
 import 'package:ecommerce_app/app/features/search/presentation/ui/pages/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,8 +75,19 @@ class _InitialPageState extends State<InitialPage> {
               body: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  HomePage(),
+                children: [
+                  // HomePage(),
+                  // SearchPage(),
+                  // CartPage(),
+                  // SettingsPage(),
+                  ProductPage(productData: ProductDataEntity(
+                    id: 1,
+                    name: 'Lorem Ipsum Bla bla',
+                    price: 99.99,
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Nasa_blue_marble.jpg/220px-Nasa_blue_marble.jpg',
+                    description: 'Lorem Ipsum Bla bla Lorem Ipsum Bla blaLorem Ipsum Bla blaLorem Ipsum Bla bla Ipsum Bla bla Lorem Ipsum Bla blaLorem Ipsum Bla blaLorem Ipsum Bla bla Ipsum Bla bla Lorem Ipsum Bla blaLorem Ipsum Bla blaLorem Ipsum Bla bla Ipsum Bla bla Lorem Ipsum Bla blaLorem Ipsum Bla blaLorem Ipsum Bla bla Lorem Ipsum Bla bla Lorem Ipsum Bla blaLorem Ipsum Bla blaLorem Ipsum Bla bla Ipsum Bla bla Lorem Ipsum Bla blaLorem Ipsum Bla blaLorem Ipsum Bla bla Ipsum Bla bla Lorem Ipsum Bla blaLorem Ipsum Bla blaLorem Ipsum Bla bla Ipsum Bla bla Lorem Ipsum Bla blaLorem Ipsum Bla blaLorem Ipsum Bla bla',
+                    categories: [CategoryEntity(id: 1, name: 'Teste')]
+                  )),
                   SearchPage(),
                   CartPage(),
                   SettingsPage(),
