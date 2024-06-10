@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/app/core/network/api_client.dart';
 import 'package:ecommerce_app/app/features/home/presentation/bloc/home_bloc.dart';
+import 'package:ecommerce_app/app/features/session/presentation/bloc/session/session_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import '../../features/initial_page/presentation/bloc/initial_page_bloc.dart';
@@ -36,6 +37,9 @@ class Inject {
       /// Controllers
       ..registerFactory<HomeBloc>(
         () => HomeBloc(getProductsDataUsecase: getIt()),
+      )
+      ..registerFactory<SessionBloc>(
+            () => SessionBloc(),
       )
       ..registerFactory<InitialPageBloc>(() => InitialPageBloc());
   }
