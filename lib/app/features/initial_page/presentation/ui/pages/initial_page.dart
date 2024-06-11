@@ -1,12 +1,9 @@
-import 'package:ecommerce_app/app/core/entities/category_entity.dart';
-import 'package:ecommerce_app/app/core/entities/product_data_entity.dart';
 import 'package:ecommerce_app/app/features/cart/presentation/ui/pages/cart_page.dart';
 import 'package:ecommerce_app/app/features/home/presentation/ui/pages/home_page.dart';
-import 'package:ecommerce_app/app/features/product/presentation/ui/pages/product_page.dart';
 import 'package:ecommerce_app/app/features/search/presentation/ui/pages/search_page.dart';
 import 'package:ecommerce_app/app/features/session/presentation/bloc/session/session_bloc.dart';
+import 'package:ecommerce_app/app/features/session/presentation/bloc/session/session_events.dart';
 import 'package:ecommerce_app/app/features/session/presentation/bloc/session/session_states.dart';
-import 'package:ecommerce_app/app/features/session/presentation/ui/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -30,11 +27,16 @@ class InitialPage extends StatefulWidget {
 class _InitialPageState extends State<InitialPage> {
   late final PageController _pageController;
   final _initialPageBloc = GetIt.I<InitialPageBloc>();
+  late final SessionBloc _sessionBloc;
   var lateIndex = 0;
 
   @override
   void initState() {
     _pageController = PageController(initialPage: 0);
+    _sessionBloc = context.read<SessionBloc>();
+    _sessionBloc.add(
+      SessionStarted(),
+    );
     super.initState();
   }
 
@@ -78,22 +80,24 @@ class _InitialPageState extends State<InitialPage> {
         body: MultiBlocListener(
           listeners: [
             BlocListener<SessionBloc, SessionStates>(
-              listenWhen: (previous, current) => current is SessionSituation,
+              listenWhen: (previous, current) =>
+                  current is SessionAuthentication,
               listener: (context, sessionState) {
-                if (sessionState is SessionSituation) {
+                if (sessionState is SessionAuthentication) {
                   developer.log('Session state changed: $sessionState');
                 }
               },
             ),
             BlocListener<InitialPageBloc, InitialPageStates>(
               listenWhen: (previous, current) =>
-              current is InitialPageNavigator,
+                  current is InitialPageNavigator,
               listener: (context, initialPageState) {
                 final sessionState = context.read<SessionBloc>().state;
                 if (initialPageState is InitialPageNavigator) {
                   if ((initialPageState.index == 2 ||
-                      initialPageState.index == 3) &&
-                      sessionState is! SessionSituation) {
+                          initialPageState.index == 3) &&
+                      sessionState is SessionAuthentication &&
+                      sessionState.logged == false) {
                     Navigator.push(
                       context,
                       RoutesManager.generateRoute(const RouteSettings(
@@ -104,14 +108,13 @@ class _InitialPageState extends State<InitialPage> {
                       NavigatorIndexTriggered(index: lateIndex),
                     );
                     return;
-                  } else {
-                    _pageController.animateToPage(
-                      initialPageState.index,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.ease,
-                    );
-                    lateIndex = initialPageState.index;
                   }
+                  _pageController.animateToPage(
+                    initialPageState.index,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
+                  lateIndex = initialPageState.index;
                 }
               },
             ),

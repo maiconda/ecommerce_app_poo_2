@@ -1,15 +1,25 @@
+import '../../../domain/entitites/role_entity.dart';
+
 sealed class SessionEvents {}
 
-final class SessionSituationChange extends SessionEvents {
+final class SessionAuthenticationChange extends SessionEvents {
   final bool logged;
-  final String accessToken;
-  final String email;
-  final String phone;
-  final String name;
-  final String userName;
-  final String password;
+  final String? accessToken;
+  final String? email;
+  final String? phone;
+  final String? name;
+  final String? imageUrl;
+  final List<RoleEntity>? roles;
 
-  SessionSituationChange({required this.logged, required this.accessToken, required this.email, required this.phone, required this.name, required this.userName, required this.password});
+  SessionAuthenticationChange({
+    required this.logged,
+    required this.accessToken,
+    required this.email,
+    required this.phone,
+    required this.name,
+    required this.imageUrl,
+    required this.roles,
+  });
 }
 
 class SessionStarted extends SessionEvents {

@@ -3,7 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProductCartWidget extends StatelessWidget {
   final bool isLast;
-  const ProductCartWidget({super.key, required this.isLast});
+  final String imgUrl;
+  final String description;
+  final String name;
+  final double price;
+  final int quantity;
+  const ProductCartWidget({super.key, required this.isLast, required this.imgUrl, required this.description, required this.name, required this.price, required this.quantity});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +37,7 @@ class ProductCartWidget extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.network(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd-q2Sn6Blje7-b7A44Y7XZ1CWCaltO-fOSKdnmIoWcROzz-BVOme68nRfgFJ5PZ4RIps&usqp=CAU',
+                imgUrl,
                 fit: BoxFit.cover,
               ),
             ),
@@ -42,7 +47,7 @@ class ProductCartWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Expanded(
+                 Expanded(
                     child: Padding(
                   padding: EdgeInsets.only(top: 3),
                   child: Column(
@@ -50,12 +55,12 @@ class ProductCartWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Cadeira Retrátil',
+                        name,
                         style: TextStyle(
                             fontWeight: FontWeight.w900, fontSize: 17.5),
                       ),
                       Text(
-                        'lorem ipsum bala bla pote',
+                        description,
                         style: TextStyle(fontSize: 13),
                       ),
                     ],
@@ -65,9 +70,9 @@ class ProductCartWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 4),
                     child: Row(
                       children: [
-                        const Expanded(
+                        Expanded(
                             child: Text(
-                          "RS128.00",
+                          price.toString(),
                           style: TextStyle(
                               fontWeight: FontWeight.w700, fontSize: 15),
                         )),
@@ -87,7 +92,7 @@ class ProductCartWidget extends StatelessWidget {
                                   size: 10,
                                 ),
                               ),
-                              const Text('5', style: TextStyle(fontWeight: FontWeight.w600),),
+                              Text(quantity.toString(), style: TextStyle(fontWeight: FontWeight.w600),),
                               Container(
                                 margin: const EdgeInsets.only(left: 6),
                                 width: 30,

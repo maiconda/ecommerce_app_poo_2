@@ -4,9 +4,11 @@ class CategoryDto extends CategoryEntity {
   CategoryDto._({
     required int id,
     required String name,
+    required String? imgUrl,
   }) : super(
     name: name,
     id: id,
+    imageUrl: imgUrl,
   );
 
   factory CategoryDto.fromJson({
@@ -15,6 +17,7 @@ class CategoryDto extends CategoryEntity {
     return CategoryDto._(
       id: json['id'],
       name: json['name'],
+      imgUrl: json['imgUrl']
     );
   }
 }

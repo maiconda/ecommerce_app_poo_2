@@ -12,9 +12,7 @@ class ProductDataDto extends ProductDataEntity {
     required super.price,
   });
 
-  factory ProductDataDto.fromJson({
-    required dynamic json,
-  }) {
+  factory ProductDataDto.fromJson(Map<String, dynamic> json) {
     return ProductDataDto._(
       categories: (json['categories'] as List)
           .map((typeJson) => CategoryDto.fromJson(json: typeJson))
@@ -22,14 +20,9 @@ class ProductDataDto extends ProductDataEntity {
       description: json['desciption'],
       id: json['id'],
       image:
-          'https://t2.tudocdn.net/601612?w=1920',
-      // image: json['imgUrl'],
+      json['imgUrl'],
       name: json['name'],
       price: json['price'],
     );
-  }
-
-  static List<ProductDataDto> fromJsonList(List<dynamic> jsonList) {
-    return jsonList.map((json) => ProductDataDto.fromJson(json: json)).toList();
   }
 }
