@@ -53,8 +53,37 @@ class _SettingsPageState extends State<SettingsPage> with ConfirmationMixin {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.network(
-                            state.imageUrl ?? '',
+                            state.imageUrl!,
                             fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                        : null,
+                                  ),
+                                );
+                              }
+                            },
+                            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return  Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: const BoxDecoration(
+                                  color: Colors.redAccent,
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.error,
+                                    size: 60,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -102,44 +131,57 @@ class _SettingsPageState extends State<SettingsPage> with ConfirmationMixin {
                           borderRadius: BorderRadius.circular(15)),
                       child: Column(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.black.withOpacity(0.5),
-                                  width: 1,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(right: 25),
-                                  child: const Icon(
-                                    FontAwesomeIcons.moneyCheckDollar,
-                                    size: 30,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                RoutesManager.generateRoute(
+                                  RouteSettings(
+                                    name: RoutesManager.ordersPage,
+                                    arguments: state.accessToken,
                                   ),
                                 ),
-                                Expanded(
-                                    child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Pedidos',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.black.withOpacity(0.5),
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(right: 25),
+                                    child: const Icon(
+                                      FontAwesomeIcons.moneyCheckDollar,
+                                      size: 30,
                                     ),
-                                    Text(
-                                      'lorem ipsum kauanyu chata ipsum',
-                                      style: TextStyle(
-                                          color: Colors.black.withOpacity(0.8)),
-                                    ),
-                                  ],
-                                ))
-                              ],
+                                  ),
+                                  Expanded(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Pedidos',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'lorem ipsum kauanyu chata ipsum',
+                                        style: TextStyle(
+                                            color: Colors.black.withOpacity(0.8)),
+                                      ),
+                                    ],
+                                  ))
+                                ],
+                              ),
                             ),
                           ),
                           if (state.roles![0].name == 'ADMIN') ...[

@@ -118,7 +118,7 @@ class SuccessfulWidget extends StatelessWidget {
       ),
       content: Text(
         message,
-        textAlign: TextAlign.justify,
+        textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.bodyLarge,
       ),
       actionsAlignment: MainAxisAlignment.end,

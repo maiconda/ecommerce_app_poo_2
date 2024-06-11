@@ -67,9 +67,41 @@ class _ProductPageState extends State<ProductPage> with DialogMixins {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  width: double.infinity,
                                   height: 350,
                                   color: Colors.red,
+                                  child: Image.network(
+                                    widget.productData.image,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      } else {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress.expectedTotalBytes != null
+                                                ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                                : null,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      return  Container(
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.redAccent,
+                                        ),
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.error,
+                                            size: 120,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(

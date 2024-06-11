@@ -6,6 +6,11 @@ import 'package:ecommerce_app/app/features/cart/domain/use_cases/get_cart/get_ca
 import 'package:ecommerce_app/app/features/cart/domain/use_cases/get_cart/get_cart_usecase_imp.dart';
 import 'package:ecommerce_app/app/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:ecommerce_app/app/features/home/presentation/bloc/home_bloc.dart';
+import 'package:ecommerce_app/app/features/orders/data/data_sources/get_orders/get_cart_remote_datasource.dart';
+import 'package:ecommerce_app/app/features/orders/data/data_sources/get_orders/get_cart_rest_remote_datasource.dart';
+import 'package:ecommerce_app/app/features/orders/domain/repositories/get_orders_repository.dart';
+import 'package:ecommerce_app/app/features/orders/domain/use_cases/get_orders/get_orders_usecase.dart';
+import 'package:ecommerce_app/app/features/orders/presentation/ui/bloc/order_bloc.dart';
 import 'package:ecommerce_app/app/features/product/data/data_sources/add_product_to_card/add_product_to_cart_remote_datasource.dart';
 import 'package:ecommerce_app/app/features/product/data/repositories/add_product_to_card_repository_imp.dart';
 import 'package:ecommerce_app/app/features/product/domain/repositories/add_product_to_cart_repository.dart';
@@ -35,8 +40,16 @@ import 'package:ecommerce_app/app/features/session/presentation/bloc/login/login
 import 'package:ecommerce_app/app/features/session/presentation/bloc/session/session_bloc.dart';
 import 'package:ecommerce_app/app/features/session/presentation/bloc/sign_in/sign_in_bloc.dart';
 import 'package:get_it/get_it.dart';
+import '../../features/cart/data/data_sources/buy_cart/buy_cart_remote_datasource.dart';
+import '../../features/cart/data/data_sources/buy_cart/buy_cart_rest_remote_datasource.dart';
+import '../../features/cart/data/repositories/buy_cart.repositoy_imp.dart';
 import '../../features/cart/data/repositories/get_cart_repository_imp.dart';
+import '../../features/cart/domain/repositories/buy_cart_repository.dart';
+import '../../features/cart/domain/use_cases/buy_cart/buy_cart.usecase.dart';
+import '../../features/cart/domain/use_cases/buy_cart/buy_cart.usecase_imp.dart';
 import '../../features/initial_page/presentation/bloc/initial_page_bloc.dart';
+import '../../features/orders/data/repositories/get_orders_repository_imp.dart';
+import '../../features/orders/domain/use_cases/get_orders/get_orders_usecase_imp.dart';
 import '../../features/product/data/data_sources/add_product_to_card/add_product_to_cart_rest_datasource.dart';
 import '../../features/product/data/data_sources/get_products_data/get_products_data_remote_datasource.dart';
 import '../../features/product/data/data_sources/get_products_data/get_products_data_rest_datasource.dart';
@@ -107,17 +120,27 @@ class Inject {
         ),
       )
       ..registerLazySingleton<AddProductToCartRemoteDatasource>(
-            () => AddProductToCartRestDatasource(
+        () => AddProductToCartRestDatasource(
           dio: Dio(),
         ),
       )
       ..registerLazySingleton<RemoveProductToCartRemoteDatasource>(
-            () => RemoveProductToCartRestDatasource(
+        () => RemoveProductToCartRestDatasource(
           dio: Dio(),
         ),
       )
       ..registerLazySingleton<GetCartRemoteDatasource>(
-            () => GetCartRestDatasource(
+        () => GetCartRestDatasource(
+          dio: Dio(),
+        ),
+      )
+      ..registerLazySingleton<BuyCartRemoteDatasource>(
+        () => BuyCartRestDatasource(
+          dio: Dio(),
+        ),
+      )
+      ..registerLazySingleton<GetOrdersRemoteDatasource>(
+            () => GetOrdersRestDatasource(
           dio: Dio(),
         ),
       )
@@ -144,13 +167,21 @@ class Inject {
         () => GetSearchRepositoryImp(getSearchRemoteDatasource: getIt()),
       )
       ..registerLazySingleton<AddProductToCartRepository>(
-            () => AddProductToCartRepositoryImp(addProductToCartRemoteDatasource: getIt()),
+        () => AddProductToCartRepositoryImp(
+            addProductToCartRemoteDatasource: getIt()),
       )
       ..registerLazySingleton<RemoveProductToCartRepository>(
-            () => RemoveProductToCartRepositoryImp(removeProductToCartRemoteDatasource: getIt()),
+        () => RemoveProductToCartRepositoryImp(
+            removeProductToCartRemoteDatasource: getIt()),
       )
       ..registerLazySingleton<GetCartRepository>(
-            () => GetCartRepositoryImp(getCartRemoteDatasource: getIt()),
+        () => GetCartRepositoryImp(getCartRemoteDatasource: getIt()),
+      )
+      ..registerLazySingleton<BuyCartRepository>(
+        () => BuyCartRepositoryImp(buyCartRemoteDatasource: getIt()),
+      )
+      ..registerLazySingleton<GetOrdersRepository>(
+        () => GetOrdersRepositoryImp(getOrdersRemoteDatasource: getIt()),
       )
 
       /// UseCases
@@ -185,18 +216,28 @@ class Inject {
         ),
       )
       ..registerLazySingleton<AddProductToCartUseCase>(
-            () => AddProductToCartUseCaseImp(
+        () => AddProductToCartUseCaseImp(
           addProductToCartRepository: getIt(),
         ),
       )
       ..registerLazySingleton<RemoveProductToCartUseCase>(
-            () => RemoveProductToCartUseCaseImp(
+        () => RemoveProductToCartUseCaseImp(
           removeProductToCartRepository: getIt(),
         ),
       )
       ..registerLazySingleton<GetCartUseCase>(
-            () => GetCartUseCaseImp(
+        () => GetCartUseCaseImp(
           getCartRepository: getIt(),
+        ),
+      )
+      ..registerLazySingleton<BuyCartUseCase>(
+        () => BuyCartUseCaseImp(
+          buyCartRepository: getIt(),
+        ),
+      )
+      ..registerLazySingleton<GetOrdersUseCase>(
+        () => GetOrdersUseCaseImp(
+          getOrdersRepository: getIt(),
         ),
       )
 
@@ -239,8 +280,14 @@ class Inject {
         ),
       )
       ..registerFactory<CartBloc>(
-            () => CartBloc(
+        () => CartBloc(
+          buyCartUseCase: getIt(),
           getCartUseCase: getIt(),
+        ),
+      )
+      ..registerFactory<OrdersBloc>(
+        () => OrdersBloc(
+          getOrdersUsecase: getIt(),
         ),
       )
       ..registerFactory<InitialPageBloc>(() => InitialPageBloc());

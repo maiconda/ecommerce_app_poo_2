@@ -29,41 +29,69 @@ class _SearchListPageState extends State<SearchListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SearchListBloc>(
-      create: (_) => _searchListBloc..add(
-          SearchListTriggered(
-            semantic: widget.semantic,
-            searchType: widget.searchType,
-            categoryId: widget.categoryId,
-          ),
-        ),
-      child: SafeArea(
-        child: Scaffold(
-          body: BlocBuilder<SearchListBloc, SearchListStates>(
-            buildWhen: (previous, current) => current is SearchListLoadSuccess || current is SearchListLoadFailure,
-            builder: (context, state) {
-              if (state is SearchListLoadProgress) {
-                return const Center(child: Text('carregando'));
-              } else if (state is SearchListLoadSuccess) {
-                return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, childAspectRatio: 0.7),
-                  padding: const EdgeInsets.all(6),
-                  itemCount: state.products.length,
-                  itemBuilder: (context, index) {
-                    final product = state.products[index];
-                    return ProductCardWidget(
-                      productData: product,
-                    );
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: BlocProvider<SearchListBloc>(
+              create: (_) => _searchListBloc..add(
+                  SearchListTriggered(
+                    semantic: widget.semantic,
+                    searchType: widget.searchType,
+                    categoryId: widget.categoryId,
+                  ),
+                ),
+              child: BlocBuilder<SearchListBloc, SearchListStates>(
+                  buildWhen: (previous, current) => current is SearchListLoadSuccess || current is SearchListLoadFailure,
+                  builder: (context, state) {
+                    if (state is SearchListLoadProgress) {
+                      return const Center(child: Text('carregando'));
+                    } else if (state is SearchListLoadSuccess) {
+                      return Column(
+                        children: [
+                          SizedBox(height: 20,),
+                          Expanded(
+                            child: GridView.builder(
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2, childAspectRatio: 0.7),
+                              padding: const EdgeInsets.all(6),
+                              itemCount: state.products.length,
+                              itemBuilder: (context, index) {
+                                final product = state.products[index];
+                                return ProductCardWidget(
+                                  productData: product,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    } else if (state is SearchListLoadFailure) {
+                      return const Center(child: Text('Failed to load products'));
+                    } else {
+                      return Container();
+                    }
                   },
-                );
-              } else if (state is SearchListLoadFailure) {
-                return const Center(child: Text('Failed to load products'));
-              } else {
-                return Container();
-              }
-            },
-          ),
+                ),
+                        ),
+            ),
+            Positioned(
+              top: 15,
+              left: 15,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                ),
+              ),
+            ),]
         ),
       ),
     );

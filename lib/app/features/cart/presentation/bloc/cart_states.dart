@@ -19,6 +19,21 @@ final class CartLoadFailure extends CartStates {
   CartLoadFailure({required this.failure});
 }
 
+final class BuyCartLoadSuccess extends CartStates {
+  BuyCartLoadSuccess();
+}
+
+final class BuyCartLoadProgress extends CartStates {
+  BuyCartLoadProgress();
+}
+
+final class BuyCartLoadFailure extends CartStates {
+  final Failure failure;
+
+  BuyCartLoadFailure({required this.failure});
+}
+
+
 final class CartFormatted extends CartStates {
   final List<FormattedCartEntity> formattedCart;
 

@@ -25,19 +25,22 @@ class RemoveProductToCartRestDatasource implements RemoveProductToCartRemoteData
       return Left(ServerFailure());
     }
     try {
-      Response response = await dio.get(
-        '$url/products',
+      dio.options.headers['Authorization'] = 'Bearer $accessToken';
+      Response response = await dio.delete(
+        '$url/bag',
+        data: {
+          'id': id.toString(),
+        },
       );
       if (response.statusCode == 200) {
-        List<dynamic> data = response.data;
-        List<ProductDataEntity> products = data
-            .map((product) => ProductDataDto.fromJson(product))
-            .toList();
+        developer.log('okkk');
         return Right(0);
       } else {
+        developer.log('ruim 1');
         return Left(ServerFailure());
       }
     } catch (e) {
+      developer.log('ruim 2');
       return Left(ServerFailure());
     }
   }

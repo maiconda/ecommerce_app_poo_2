@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/app/features/about/presentation/ui/pages/about_page.dart';
+import 'package:ecommerce_app/app/features/orders/presentation/ui/pages/orders_page.dart';
 import 'package:ecommerce_app/app/features/search/domain/enums/search_type_enum.dart';
 import 'package:ecommerce_app/app/features/search/presentation/ui/pages/search_list_page.dart';
 import 'package:ecommerce_app/app/features/session/presentation/ui/pages/login_page.dart';
@@ -20,9 +21,19 @@ class RoutesManager {
   static const String aboutPage = 'about_page';
   static const String adminSignInPage = 'admin_sign_in_page';
   static const String searchListPage = 'search_list_page';
+  static const String ordersPage = 'orders_page';
 
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
+      case ordersPage:
+        return MaterialPageRoute(
+          builder: (context) => Responsiveness.returnResponsiveWidget(
+            widget: OrdersPage(
+              accessToken: routeSettings.arguments! as String,
+            ),
+            context: context,
+          ),
+        );
       case searchListPage:
         final argumentsList = routeSettings.arguments! as List<dynamic>;
         return MaterialPageRoute(

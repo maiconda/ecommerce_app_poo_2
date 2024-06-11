@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 mixin ConfirmationMixin {
   Future<void> showConfirmOperationDialog({
@@ -13,14 +14,26 @@ mixin ConfirmationMixin {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
+          title: Center(
+            child: CircleAvatar(
+              radius: 40,
+              backgroundColor: Colors.orangeAccent.withOpacity(0.5),
+              child: Icon(
+                FontAwesomeIcons.question,
+                size: 50,
+                color: Colors.orange,
+              ),
+            ),
+          ),
           content: Text(
             message,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
           actionsAlignment: MainAxisAlignment.spaceBetween,
           actions: <Widget>[
             ActionButtonWidget(
               label: cancelLabel,
-              color: Colors.black,
               onPressed: () => Navigator.pop(context),
             ),
             ActionButtonWidget(
@@ -37,18 +50,14 @@ mixin ConfirmationMixin {
   }
 }
 
-// Presuming ActionButtonWidget is defined like this:
 class ActionButtonWidget extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
-  final Color? color;
 
-  const ActionButtonWidget({
-    required this.label,
-    required this.onPressed,
-    this.color,
-    Key? key,
-  }) : super(key: key);
+  const ActionButtonWidget(
+      {required this.label,
+      required this.onPressed,
+      super.key,});
 
   @override
   Widget build(BuildContext context) {

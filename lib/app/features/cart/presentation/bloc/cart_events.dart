@@ -15,3 +15,11 @@ final class CartFormatTriggered extends CartEvents {
     required this.cartProducts,
   });
 }
+
+final class BuyCartTriggered extends CartEvents {
+  final String accessToken;
+
+  BuyCartTriggered({
+    required this.accessToken,
+  });
+}

@@ -76,10 +76,18 @@ class ProductCardWidget extends StatelessWidget {
                       }
                     },
                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return const Center(
-                        child: Icon(
-                          Icons.error,
-                          color: Colors.red,
+                      return  Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: Colors.redAccent,
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.error,
+                            size: 60,
+                            color: Colors.white,
+                          ),
                         ),
                       );
                     },
