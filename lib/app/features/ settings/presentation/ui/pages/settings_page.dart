@@ -53,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> with ConfirmationMixin {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.network(
-                            state.imageUrl!,
+                            state.imageUrl ?? '',
                             fit: BoxFit.cover,
                             loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                               if (loadingProgress == null) {

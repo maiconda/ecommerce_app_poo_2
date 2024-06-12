@@ -12,12 +12,14 @@ class SearchListPage extends StatefulWidget {
   final SearchTypeEnum searchType;
   final int? categoryId;
   final String? semantic;
+  final String? name;
 
   const SearchListPage({
     super.key,
     required this.searchType,
     required this.categoryId,
     required this.semantic,
+    required this.name,
   });
 
   @override
@@ -31,11 +33,11 @@ class _SearchListPageState extends State<SearchListPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Stack(
-          children: [
-            Positioned.fill(
-              child: BlocProvider<SearchListBloc>(
-              create: (_) => _searchListBloc..add(
+        body: Stack(children: [
+          Positioned.fill(
+            child: BlocProvider<SearchListBloc>(
+              create: (_) => _searchListBloc
+                ..add(
                   SearchListTriggered(
                     semantic: widget.semantic,
                     searchType: widget.searchType,
@@ -43,56 +45,77 @@ class _SearchListPageState extends State<SearchListPage> {
                   ),
                 ),
               child: BlocBuilder<SearchListBloc, SearchListStates>(
-                  buildWhen: (previous, current) => current is SearchListLoadSuccess || current is SearchListLoadFailure,
-                  builder: (context, state) {
-                    if (state is SearchListLoadProgress) {
-                      return const Center(child: Text('carregando'));
-                    } else if (state is SearchListLoadSuccess) {
-                      return Column(
-                        children: [
-                          SizedBox(height: 20,),
-                          Expanded(
-                            child: GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, childAspectRatio: 0.7),
-                              padding: const EdgeInsets.all(6),
-                              itemCount: state.products.length,
-                              itemBuilder: (context, index) {
-                                final product = state.products[index];
-                                return ProductCardWidget(
-                                  productData: product,
-                                );
-                              },
-                            ),
+                buildWhen: (previous, current) =>
+                    current is SearchListLoadSuccess ||
+                    current is SearchListLoadFailure,
+                builder: (context, state) {
+                  if (state is SearchListLoadProgress) {
+                    return const Center(child: Text('carregando'));
+                  } else if (state is SearchListLoadSuccess) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 25,),
+                        if (widget.searchType == SearchTypeEnum.semantic)
+                          Container(
+                              child: Text(
+                                  textAlign: TextAlign.center,
+                                  'Pesquisa semântica: ${widget.semantic}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18))),
+                        if (widget.searchType == SearchTypeEnum.category)
+                          Text(
+                            textAlign: TextAlign.center,
+                            'Pesquisa por categoria: ${widget.name}',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
                           ),
-                        ],
-                      );
-                    } else if (state is SearchListLoadFailure) {
-                      return const Center(child: Text('Failed to load products'));
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
+                        const SizedBox(height: 20,),
+                        Expanded(
+                          child: GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2, childAspectRatio: 0.7),
+                            padding: const EdgeInsets.all(6),
+                            itemCount: state.products.length,
+                            itemBuilder: (context, index) {
+                              final product = state.products[index];
+                              return ProductCardWidget(
+                                productData: product,
+                              );
+                            },
+                          ),
                         ),
-            ),
-            Positioned(
-              top: 15,
-              left: 15,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context, true);
-                  },
-                ),
+                      ],
+                    );
+                  } else if (state is SearchListLoadFailure) {
+                    return const Center(child: Text('Failed to load products'));
+                  } else {
+                    return Container();
+                  }
+                },
               ),
-            ),]
-        ),
+            ),
+          ),
+          Positioned(
+            top: 15,
+            left: 15,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+              ),
+            ),
+          ),
+        ]),
       ),
     );
   }

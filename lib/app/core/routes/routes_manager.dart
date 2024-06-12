@@ -42,6 +42,7 @@ class RoutesManager {
               searchType: argumentsList[0] as SearchTypeEnum,
               categoryId: argumentsList[1] as int?,
               semantic: argumentsList[2] as String?,
+                name: argumentsList[3] as String?
             ),
             context: context,
           ),

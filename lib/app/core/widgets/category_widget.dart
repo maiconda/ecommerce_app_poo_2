@@ -25,6 +25,7 @@ class CategoryWidget extends StatelessWidget {
                 SearchTypeEnum.category,
                 categoryEntity.id,
                 null,
+                categoryEntity.name,
               ],
             ),
           ),

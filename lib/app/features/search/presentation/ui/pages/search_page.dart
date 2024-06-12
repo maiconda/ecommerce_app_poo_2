@@ -125,6 +125,7 @@ class _SearchPageState extends State<SearchPage> {
                                                   SearchTypeEnum.semantic,
                                                   null,
                                                   _searchController.value.text,
+                                                  null
                                                 ],
                                               ),
                                             ),
